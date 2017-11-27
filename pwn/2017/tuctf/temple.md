@@ -47,7 +47,7 @@ readbytes 함수에서 size+1만큼 입력받아서 1byte overflow가 발생한�
 ### 4. Exploit
 
 할당하는 chunk의 struct가 기본 malloc의 struct와 다른점은 prev_size와 size영역이 free가 되지 않더라도 둘다 남아있다는 점이다. 이 두개를 free할때 free청크가 두개있으면 청크 size를 합쳐서 큰 청크로 만들어주는데, 1byte overflow로 prev_size를 overwrite하여 원하는 힙 위치에 원하는 size를 입력시킬 수 있다.
-이를 이용해서 content_len을 큰 사이즈로 overwrite하면 heap_overflow를 일으킬 수 있다. Rethink와 Take를 이용하여 leak과 got overwrite를 해서 풀 수 있다.
+이를 이용해서 content_len을 큰 사이즈로 overwrite하면 heap_overflow를 일으킬 수 있으며 Rethink와 Take를 이용하여 leak과 got overwrite를 해서 풀 수 있다.
 
 ``` python
 from pwn import *
