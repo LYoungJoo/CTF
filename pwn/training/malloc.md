@@ -162,23 +162,23 @@ _int_malloc (mstate av, size_t bytes)
   // 다음으로 할당하려는 청크가 smallbin에 들어갈만한 사이즈인지 체크합니다.
   if (in_smallbin_range (nb))
     {
-      idx = smallbin_index (nb);
-      bin = bin_at (av, idx);
+      idx = smallbin_index (nb); // 주어진 크기에 맞는 index 계산
+      bin = bin_at (av, idx);
 
-      if ((victim = last (bin)) != bin)
-        {
-          if (victim == 0) /* initialization check */
-            malloc_consolidate (av);
+      if ((victim = last (bin)) != bin) // 가장 오래된 chunk를 불러옴. (만약 불러온 청크와 bin이 같다면 현재 bin은 비어있는 상태.)
+      	{
+          if (victim == 0) // 만약 가장 오래된 chunk가 없다면 (처음 호출되어서 초기화가 되어있지 않음.)
+            malloc_consolidate (av); // malloc_init_state()를 호출하여 초기화한다.
           else
             {
               bck = victim->bk;
-	if (__glibc_unlikely (bck->fd != victim))
+	if (__glibc_unlikely (bck->fd != victim)) // victim->bk->fd가 victim인지 확인해서 맞다면
                 {
                   errstr = "malloc(): smallbin double linked list corrupted";
                   goto errout;
                 }
-              set_inuse_bit_at_offset (victim, nb);
-              bin->bk = bck;
+              set_inuse_bit_at_offset (victim, nb); // inuse_bit를 설정하고
+              bin->bk = bck; // unlink를 진행한다.
               bck->fd = bin;
 
               if (av != &main_arena)
@@ -190,8 +190,8 @@ _int_malloc (mstate av, size_t bytes)
             }
         }
     }
-
-  /*
+    
+    /*
      If this is a large request, consolidate fastbins before continuing.
      While it might look excessive to kill all fastbins before
      even seeing if there is space available, this avoids
