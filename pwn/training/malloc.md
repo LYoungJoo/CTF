@@ -212,27 +212,21 @@ else
                              chunk2mem (victim), av);
           size = chunksize (victim); // victim의 chunk size를 구합니다.
 
-          /*
-             If a small request, try to use last remainder if it is the
-             only chunk in unsorted bin.  This helps promote locality for
-             runs of consecutive small requests. This is the only
-             exception to best-fit, and applies only when there is
-             no exact fit for a small chunk.
-           */
-
-          if (in_smallbin_range (nb) &&
+	   
+	// unsorted bin에 있는 chunk중에 요청한 사이즈보다 충분히 큰 chunk가 있을때 사용할 chunk로 선정한다.
+         if (in_smallbin_range (nb) &&
               bck == unsorted_chunks (av) &&
               victim == av->last_remainder &&
               (unsigned long) (size) > (unsigned long) (nb + MINSIZE))
             {
-              /* split and reattach remainder */
-              remainder_size = size - nb;
-              remainder = chunk_at_offset (victim, nb);
+              // 남는부분을 정리한다.
+              remainder_size = size - nb; // unsorted bin에서 선정된 chunk_size - 할당하려는 chunk_size
+              remainder = chunk_at_offset (victim, nb);
               unsorted_chunks (av)->bk = unsorted_chunks (av)->fd = remainder;
               av->last_remainder = remainder;
               remainder->bk = remainder->fd = unsorted_chunks (av);
-              if (!in_smallbin_range (remainder_size))
-                {
+              if (!in_smallbin_range (remainder_size)) // small_bin이라면 next_size가 필요없다.
+               {
                   remainder->fd_nextsize = NULL;
                   remainder->bk_nextsize = NULL;
                 }
@@ -242,14 +236,14 @@ else
               set_head (remainder, remainder_size | PREV_INUSE);
               set_foot (remainder, remainder_size);
 
-              check_malloced_chunk (av, victim, nb);
-              void *p = chunk2mem (victim);
+              check_malloced_chunk (av, victim, nb); // 그후 바로 return한다.
+              void *p = chunk2mem (victim);
               alloc_perturb (p, bytes);
               return p;
             }
 
-          /* remove from unsorted list */
-          unsorted_chunks (av)->bk = bck;
+          // size가 맞지 않다면, unsortedbin에서 제거
+          unsorted_chunks (av)->bk = bck;
           bck->fd = unsorted_chunks (av);
 
           /* Take now instead of binning if exact fit */
