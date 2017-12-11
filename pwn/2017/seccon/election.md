@@ -173,3 +173,6 @@ s.sendlineafter(prompt,'NEXTLINE')
 
 s.interactive()
 ```
+
+### 3. Exploit
+![ex_screenshot](./flag/flag2.png)
