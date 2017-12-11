@@ -191,48 +191,26 @@ _int_malloc (mstate av, size_t bytes)
         }
     }
     
-    /*
-     If this is a large request, consolidate fastbins before continuing.
-     While it might look excessive to kill all fastbins before
-     even seeing if there is space available, this avoids
-     fragmentation problems normally associated with fastbins.
-     Also, in practice, programs tend to have runs of either small or
-     large requests, but less often mixtures, so consolidation is not
-     invoked all that often in most programs. And the programs that
-     it is called frequently in otherwise tend to fragment.
-   */
-
-  else
+    // 만약 large bin이라면 가장먼저 메모리단편화를 위해 fastbin을 정리합니다.
+else
     {
       idx = largebin_index (nb);
       if (have_fastchunks (av))
         malloc_consolidate (av);
     }
 
-  /*
-     Process recently freed or remaindered chunks, taking one only if
-     it is exact fit, or, if this a small request, the chunk is remainder from
-     the most recent non-exact fit.  Place other traversed chunks in
-     bins.  Note that this step is the only place in any routine where
-     chunks are placed in bins.
-
-     The outer loop here is needed because we might not realize until
-     near the end of malloc that we should have consolidated, so must
-     do so and retry. This happens at most once, and only when we would
-     otherwise need to expand memory to service a "small" request.
-   */
 
   for (;; )
     {
       int iters = 0;
-      while ((victim = unsorted_chunks (av)->bk) != unsorted_chunks (av))
-        {
+      while ((victim = unsorted_chunks (av)->bk) != unsorted_chunks (av)) // unsorted bin을 검색합니다. (unsorted chunk가 존재한다면)
+      {
           bck = victim->bk;
-          if (__builtin_expect (victim->size <= 2 * SIZE_SZ, 0)
-              || __builtin_expect (victim->size > av->system_mem, 0))
+          if (__builtin_expect (victim->size <= 2 * SIZE_SZ, 0) // victim의 size가 system_mem보다 크다면 에러를 발생시킵니다.
+              || __builtin_expect (victim->size > av->system_mem, 0))
             malloc_printerr (check_action, "malloc(): memory corruption",
                              chunk2mem (victim), av);
-          size = chunksize (victim);
+          size = chunksize (victim); // victim의 chunk size를 구합니다.
 
           /*
              If a small request, try to use last remainder if it is the
