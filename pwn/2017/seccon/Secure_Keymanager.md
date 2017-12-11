@@ -129,4 +129,4 @@ s.sendlineafter('...','A')
 s.interactive()
 ```
 ### 4. Flag
-<img width="20" height="30"> ![ex_screenshot](./flag/flag1.png) </img>
+![ex_screenshot](./flag/flag1.png)
