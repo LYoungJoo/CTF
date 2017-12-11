@@ -9,7 +9,7 @@ Secure KeyManager 400 (Solver : 36)
 
 x64 바이너리이다.
 
-### 3. Vulnerability
+### 2. Vulnerability
 ```c
 int add_key()
 {
@@ -42,7 +42,7 @@ int add_key()
 ```
 malloc을 할때 일부로 0바이트를 할당하도록 유도한다음, heap overflow를 내면 다음 청크의 사이즈까지 덮을 수 있다.
 
-### 4. Exploit
+### 3. Exploit
 
 Size 조작이 가능하므로 0x70 Chunk를 이용하여 Chunk Overlap을 낸다음 fastbin의 fd를 overwrite하여 exploit 하면 된다. (Edit 에서 32보다 더 큰값을 쓸 수 있는것을 이용)
 
@@ -128,3 +128,5 @@ s.sendlineafter('...','A')
 
 s.interactive()
 ```
+### 4. Flag
+![ex_screenshot](./flag/flag1.png)
