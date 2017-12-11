@@ -126,3 +126,4 @@ s.interactive()
 ```
 
 ### 3. Flag
+![ex_screenshot](./flag/flag3.png)
