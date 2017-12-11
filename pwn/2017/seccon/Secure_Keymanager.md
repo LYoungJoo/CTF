@@ -1,4 +1,4 @@
-Secure KeyManager 400 (Solver : 36) - pwn
+Secure KeyManager 400 (Solver : 36)
 =============
 
 ### 1. Introduction
