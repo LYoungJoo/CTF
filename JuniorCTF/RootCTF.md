@@ -22,7 +22,7 @@ FLAG{Welcome_to_Seoul_Digitech_ROOT_CTF}
 ```
 
 FLAG : FLAG{Welcome_to_Seoul_Digitech_ROOT_CTF} 
-
+<br><br><br>
 ## Calculate 167 (Misc)
 ```
 누가 내 패스워드좀 알려줘!
@@ -147,7 +147,7 @@ print flag
 ```
 
 FLAG : FLAG{Rev3rse_P1us_M1nus_X0R_R0L}
-
+<br><br><br>
 ## Vocabulary 460 (Misc)
 ```
 플래그가 적힌 친구의 단어장을 잃어버렸다 
@@ -219,6 +219,7 @@ bE........bEE.......bEEEE.....{ tHANk_FiND_MY_vOCAbuLAry
 ![ex_screenshot](./jpg/png.png)
 
 FLAG : FLAG{_1vErticAl_2rEADiNg_3TAStlSb}
+<br><br><br>
 
 ## Do you know ㅁㅁㅁ? 706 (Misc)
 ```
@@ -264,6 +265,7 @@ h 6 4 c b 1 0 8
 0 = 4dog를 해석하면 0이 4개있다는거다. 그 조건에 맞는 문자열을 아래서 찾은다음 md5encryption.com 에서 decrypt하면 flag가 나온다.
 
 FLAG : FLAG is FLAG{MD5_3nCryPt_Ye@h!}
+<br><br><br>
 
 ## Find the flag 913 (Misc)
 ```
@@ -283,6 +285,7 @@ WebCacheV01.dat 분석하면 되는데 esedatabaseview를 가지고 분석하면
 ![ex_screenshot](./jpg/for2.png)
 
 FLAG : FLAG{I3_Br0wser_F0r3ns1c_4ND_RoUgh_W0rk}
+<br><br><br>
 
 ## Stage Game 229 (Rev)
 ```
@@ -296,6 +299,9 @@ Link
 바이너리를 받아보면 Stage 1부터 10까지 기다리면 Flag를 주는데 강제로 10위치로 eip를 바꾸고 Sleep 인자를 0으로 주면 Flag를 출력한다.
 
 ![ex_screenshot](./jpg/rev2.png)
+
+FLAG : FLAG{Y0ur_p4t1enc3_1s_gr3at!}
+<br><br><br>
 
 ## ECG 863 (Rev)
 ```
@@ -318,6 +324,7 @@ print "FLAG{" +flag +"}"
 ```
 
 FLAG : FLAG{An1v1a_3GGniViA_3Ni6mA}
+<br><br><br>
 
 ## Present 934 (Rev)
 ```
