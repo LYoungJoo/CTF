@@ -278,11 +278,11 @@ Link
 WebCacheV01.dat 분석하면 되는데 esedatabaseview를 가지고 분석하면 된다.
 보다보면 아래와같이 구글드라이브에 들어간게 있다.
 
-![ex_screenshot](./jpg/for1.png)
+![ex_screenshot](./jpg/for2.png)
 
 똑같이 들어가서 flag를 검색해보면 존재한다.
 
-![ex_screenshot](./jpg/for2.png)
+![ex_screenshot](./jpg/for1.png)
 
 FLAG : FLAG{I3_Br0wser_F0r3ns1c_4ND_RoUgh_W0rk}
 <br><br><br>
