@@ -335,4 +335,161 @@ hint : FLAG.find("Hello") == 5
 Link
 ```
 
-바이너리를 까보면 디버깅을 체크하는 구문으로 
+바이너리를 ida로 열어보면 아래와 같은 소스가 존재한다.
+```c
+int main()
+{
+  char v1; // [sp+Ch] [bp-F4h]@1
+  int v2; // [sp+D0h] [bp-30h]@1
+  char v3; // [sp+D4h] [bp-2Ch]@1
+  int v4; // [sp+E0h] [bp-20h]@1
+  __int16 v5; // [sp+E4h] [bp-1Ch]@1
+  char v6; // [sp+E6h] [bp-1Ah]@1
+  char Str[4]; // [sp+F0h] [bp-10h]@1
+  unsigned int v8; // [sp+FCh] [bp-4h]@1
+  int savedregs; // [sp+100h] [bp+0h]@1
+
+  memset(&v1, 0xCCu, 0xF4u);
+  v8 = (unsigned int)&savedregs ^ __security_cookie;
+  strcpy(Str, "Ir[Gm{");
+  v4 = 1181706596;
+  v5 = 25961;
+  v6 = 0;
+  v2 = 1598448680;
+  v3 = 0;
+  while ( 1 )
+  {
+    IsDebuggerPresent();
+    if ( debug_check_1() == 1 )
+      break;
+    sub_4113B6(Str, (int)&v4);                  // print flag
+  }
+  sub_4113B6(Str, (int)&v4);
+  sub_411208();
+  sub_41128A(&savedregs, &dword_412C9C);
+  sub_41129E();
+  return debug_check_1();
+}
+```
+또한 플레그를 출력하는 부분은 아래와 같다.
+
+```c
+int __cdecl sub_412A00(char *Str, int a2)
+{
+  size_t v2; // eax@4
+  char v4; // [sp+Ch] [bp-CCh]@1
+  unsigned int i; // [sp+D0h] [bp-8h]@3
+
+  memset(&v4, 0xCCu, 0xCCu);
+  if ( sub_411375() == 1 && !byte_41B141 )
+  {
+    for ( i = 0; ; ++i )
+    {
+      v2 = j_strlen(::Str);
+      if ( i >= v2 )
+        break;
+      sub_41135C((const char *)&unk_418C30, ::Str[i]); // print FLAG
+    }
+    sub_41135C((const char *)&unk_418C30, byte_41B005); // print {
+    sub_4113CA(Str, a2); // print flag_content
+    sub_41135C("%c\n", byte_41B006); // print }
+  }
+  return debug_check_1();
+}
+```
+flag의 내용을 출력하는 sub_4113CA 안에도 출력하는 부분이 나눠져 있는데, 그 부분은 아래와 같다.
+
+```c
+// print flag_content - 1 
+int __cdecl sub_412680(char *Str, int a2)
+{
+  int v2; // esi@1
+  size_t v3; // eax@2
+  char v5; // [sp+Ch] [bp-104h]@1
+  unsigned int i; // [sp+D0h] [bp-40h]@1
+  int v7; // [sp+DCh] [bp-34h]@1
+  int v8; // [sp+E0h] [bp-30h]@1
+  int v9; // [sp+E4h] [bp-2Ch]@1
+  int v10; // [sp+E8h] [bp-28h]@1
+  int v11; // [sp+ECh] [bp-24h]@1
+  int v12; // [sp+F0h] [bp-20h]@1
+  int v13; // [sp+F4h] [bp-1Ch]@1
+  int v14; // [sp+F8h] [bp-18h]@1
+  int v15; // [sp+FCh] [bp-14h]@1
+  int v16; // [sp+100h] [bp-10h]@1
+  int v17; // [sp+104h] [bp-Ch]@1
+  unsigned int v18; // [sp+10Ch] [bp-4h]@1
+  int savedregs; // [sp+110h] [bp+0h]@1
+
+  memset(&v5, 0xCCu, 0x104u);
+  v18 = (unsigned int)&savedregs ^ __security_cookie;
+  v7 = 1;
+  v8 = 22;
+  v9 = 51;
+  v10 = 34;
+  v11 = 22;
+  v12 = 43;
+  v13 = 12;
+  v14 = 34;
+  v15 = 37;
+  v16 = 54;
+  v17 = 28;
+  v2 = sub_411375();
+  *(&v7 + 4 * sub_411375()) = v2;
+  for ( i = 0; ; ++i )
+  {
+    v3 = j_strlen(Str);
+    if ( i >= v3 )
+      break;
+    byte_41B140 = i * i ^ Str[i];
+    byte_41B140 ^= *((_BYTE *)&v7 + 4 * i);
+    Str[i] = byte_41B140;
+  }
+  if ( byte_41B141 == 1 )
+  {
+    sub_41135C((const char *)&unk_418C38, (char)Str);
+    sub_4113CF(a2, (int)&v7);
+  }
+  sub_41128A(&savedregs, &dword_4127C4);
+  sub_41129E();
+  return debug_check_1();
+}
+
+// print flag_content - 2
+int __cdecl sub_412D70(int a1, int a2)
+{
+  size_t v2; // eax@2
+  char v4; // [sp+Ch] [bp-E8h]@1
+  unsigned int i; // [sp+D0h] [bp-24h]@1
+  int v6; // [sp+DCh] [bp-18h]@1
+  int v7; // [sp+E0h] [bp-14h]@1
+  int v8; // [sp+E4h] [bp-10h]@1
+  int v9; // [sp+E8h] [bp-Ch]@1
+  unsigned int v10; // [sp+F0h] [bp-4h]@1
+  int savedregs; // [sp+F4h] [bp+0h]@1
+
+  memset(&v4, 0xCCu, 0xE8u);
+  v10 = (unsigned int)&savedregs ^ __security_cookie;
+  v6 = 34;
+  v7 = 42;
+  v8 = 54;
+  v9 = 33;
+  *(&v6 + sub_411375()) = *(_DWORD *)(a2 + 32);
+  *(&v6 + 3 * sub_411375()) = *(_DWORD *)(a2 + 40);
+  for ( i = 0; ; ++i )
+  {
+    v2 = j_strlen(Str);
+    if ( i >= v2 )
+      break;
+    byte_41B140 = i * i ^ Str[i];
+    byte_41B140 ^= *((_BYTE *)&v6 + 4 * i);
+    Str[i] = byte_41B140;
+  }
+  sub_41135C((const char *)&unk_418C38, (unsigned int)Str);
+  sub_41128A(&savedregs, &dword_412E88);
+  sub_41129E();
+  return debug_check_1();
+}
+```
+
+저렇게 Flag를 출력하는 함수를 정상작동하도록 동적 디버깅을 하면서 Debug 여부나, 바이너리에서 체크하는 flag들을 다 우회해주면 flag가 출력된다.
