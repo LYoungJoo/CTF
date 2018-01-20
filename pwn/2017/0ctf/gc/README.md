@@ -1,4 +1,4 @@
-GC 687 (Solver : 6)
+GC (Solver : 6)
 =============
 
 ### 1. Introduction
