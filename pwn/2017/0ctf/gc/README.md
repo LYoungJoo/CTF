@@ -84,7 +84,6 @@ def settag(length,string):
 	s.sendlineafter('length:\n',length)
 	s.sendlineafter('string:\n',string)
 
-# 0x100000 = 131072 * 8
 libc = ''
 for i in range(6):
 	for j in range(3):
