@@ -361,7 +361,7 @@ flag : dimi{this_is_blind_store_xss}
 ## Rev
 
 ### EZPZ  ( 500p )
-![ex_screenshot](./jpg/misc1.png)
+![ex_screenshot](./jpg/misc1.png)<br>
 dotnet을 디컴파일 해보면 flag가 나온다.
 
 flag : dimi{Welcome_reversing}
