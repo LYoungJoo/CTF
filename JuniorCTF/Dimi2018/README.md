@@ -394,7 +394,7 @@ print flag
 
 - ex.py
 
-단순 역연산하면 된다.
+단순 브포하면 된다.
 
 flag : dimi{ca1cul4t3d_inv3rs3?_0r_us3d_z3?_0h_y0u_ar3_4_F0Ol_;)}
 
