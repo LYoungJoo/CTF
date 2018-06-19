@@ -283,7 +283,7 @@ flag 형식 : flag{ "무엇인가" }, dimi{}가 아닙니다.
 DOWNLOAD
 ```
 
-![ex_screenshot](./jpg/misc1.png)
+![ex_screenshot](./jpg/rev1.png)<br>
 jd-gui로 자바 코드를 보면 flag를 출력해주는 부분이 있는데 자바로 그대로 쳐주면 된다.
 
 flag : flag{Are_you_Genius_or_Stupid?}
@@ -361,7 +361,7 @@ flag : dimi{this_is_blind_store_xss}
 ## Rev
 
 ### EZPZ  ( 500p )
-![ex_screenshot](./jpg/rev1.png)
+![ex_screenshot](./jpg/misc1.png)
 dotnet을 디컴파일 해보면 flag가 나온다.
 
 flag : dimi{Welcome_reversing}
@@ -398,45 +398,6 @@ print flag
 
 flag : dimi{ca1cul4t3d_inv3rs3?_0r_us3d_z3?_0h_y0u_ar3_4_F0Ol_;)}
 
-
-
-### Table  ( 970p )
-
-```
-DOWNLOAD
-```
-
-
-
-```python
-from ntgdb import *
-import string
-
-bp('0x555555554000+0xbe6')
-flag = ''
-chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
-
-for i in range(15):
-	for char in chars:
-		tmp = flag + char
-		ex("r < <(python -c \'print \"%s\"\')" % tmp.ljust(15,'A'))
-		for j in range(i):
-			ex('c')
-		con = ex('p/x $cl==$al',True,True)
-		if con.split()[2] == '0x1':
-			print("FIND!! : " + char)
-			flag += char
-			break
-
-print(flag)
-# INCAACKEDNCHIBC
-```
-
-- ex.py
-
-역연산 짜려다가 귀찮아서 사이드채널로 풀었더니 금방 풀렸다. 위 코드로 돌리면 문자열이 나오는데 그걸 입력해주면 플레그가 나온다.
-
-flag : dimi{1T$_N3VER_E@SY!}
 
 
 
